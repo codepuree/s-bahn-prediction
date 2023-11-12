@@ -21,8 +21,7 @@ fn main() {
 
     loop {
         let (mut socket, _) = tungstenite::connect(url.clone()).expect("should be able to connect");
-        let _ =
-            socket.send("socket.send(\"BBOX 1152072 6048052 1433666 6205578 tenant=sbm\");".into());
+        let _ = socket.send("BBOX 1152072 6048052 1433666 6205578 5 tenant=sbm".into());
         let _ = socket.send("BUFFER 100 100".into());
         let _ = socket.send("GET extra_geoms".into());
         let _ = socket.send("SUB extra_geoms".into());
