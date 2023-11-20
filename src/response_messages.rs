@@ -69,7 +69,7 @@ pub enum Content {
 
 // {"source": "deleted_vehicles_schematic", "content": "sbm_140404727073712", "timestamp": 1697454536271.5, "client_reference": null}
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Message {
+pub struct ResponseMessage {
     // source: String,
     #[serde(flatten)]
     pub content: Content,

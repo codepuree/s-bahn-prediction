@@ -18,7 +18,7 @@ use std::{thread, usize};
 
 use macroquad::prelude::*;
 
-use scraper::live_map_message::{Content, Message};
+use scraper::response_messages::{Content, ResponseMessage};
 
 #[derive(Debug)]
 enum AnalysisError {
@@ -429,10 +429,10 @@ impl Record {
     }
 }
 
-impl TryFrom<Message> for Record {
+impl TryFrom<ResponseMessage> for Record {
     type Error = AnalysisError;
 
-    fn try_from(value: Message) -> Result<Self, Self::Error> {
+    fn try_from(value: ResponseMessage) -> Result<Self, Self::Error> {
         match value.content {
             Content::TrajectorySchematic(trajectory) => match trajectory {
                 GeoJson::Feature(feature) => match feature.properties {
@@ -603,7 +603,7 @@ async fn main() {
         match line {
             Ok(line) => {
                 if !line.is_empty() {
-                    match serde_json::from_str::<Message>(&line) {
+                    match serde_json::from_str::<ResponseMessage>(&line) {
                         Ok(m) => {
                             match m.content {
                                 Content::TrajectorySchematic(_) => {
@@ -621,7 +621,7 @@ async fn main() {
                                             eprintln!("should be train: {err}\n\t{line:#?}");
                                         }
                                     };
-                                    match <Message as TryInto<Record>>::try_into(m.clone()) {
+                                    match <ResponseMessage as TryInto<Record>>::try_into(m.clone()) {
                                         Ok(record) => {
                                             persistent_trains.insert(record);
                                         }
